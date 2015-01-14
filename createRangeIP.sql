@@ -35,7 +35,7 @@ get_grp: LOOP
 				LEAVE get_ip; 
 			END IF;
 			SET @cmd = CONCAT('INSERT IGNORE INTO `',grp,'` VALUES(\'',ip,'\');');
-			SELECT ip_s, ip_e, ip, @cmd;
+			-- SELECT ip_s, ip_e, ip, @cmd;
 			PREPARE stmt from @cmd;
 			EXECUTE stmt;
 		END LOOP get_ip;
