@@ -15,21 +15,23 @@ then
 	do	
 		echo -e "Please enter service group name : \n"
 		read srvcName
-		add_srvc="y"
-		nb_srvc=0
-		while [ "$add_srvc" == "y" ]
-		do	
-			echo -e "Please enter protocol (tcp|udp|icmp) : \n"
-			read protocol
-			echo -e "Please enter port begin : \n"
-			read port_b
-			echo -e "Please enter port end : \n"
-			read port_e
-			echo -e "Add a new service for the group $srvcName (y|n) : \n"
-			read add_srvc
+		echo "Enter protocol(tcp|udp|icmp) follower by port. IE: UDP53 or TCP130-135. Finish by \".\""
+		read srvc	
+		while [ "$srvc" != "." ]
+		do
+			var=$(echo $srvc | tr -d \" | tr -d \  | sed -n "s/\([a-zA-Z]*\)\([0-9]*\)[-]\{0,1\}\([0-9]*\).*/\1 \2 \3/p")
+			protocol=$(echo $var | awk '{print $1}' | tr '[:upper:]' '[:lower:]')
+			port_b=$(echo $var | awk '{print $2}')
+			port_e=$(echo $var | awk '{print $3}')		
+			if [ "$port_e" == "" ]
+			then
+				port_e=$port_b
+
+			fi
 			mysql -u root -D fw_logs -e "insert into fwService(id, srvcName, protocol, port_b, port_e) values('', '$srvcName', '$protocol', '$port_b', '$port_e');"
-			mysql -u root -D fw_logs -e "select * from fwService where srvcName like '%$srvcName%';"
+			read srvc
 		done	
+		mysql -u root -D fw_logs -e "select * from fwService where srvcName like '%$srvcName%';"
 		echo -e "Are you agree with those changes (y|n) : \n"
 		read ok
 		if [ "$ok" == "n" ]
@@ -39,13 +41,13 @@ then
 	done
 elif [ "$1" == "-e" ]
 then
-	mysql -u root -D fw_logs -e "select distinct srvcName from fwService;"
+	mysql -u root -D fw_logs -e "select distinct srvcName from fwService order by srvcName;"
 	echo -e "Enter the name of service group to delete : \n"
 	read srvc_name 
-	mysql -u root -D fw_logs -e "delete from fwService where name='$srv_name';"
+	mysql -u root -D fw_logs -e "delete from fwService where srvcName like '$srvc_name';"
 elif [ "$1" == "-l" ]
 then 
-	mysql -u root -D fw_logs -e "select distinct srvcName from fwService;"
+	mysql -u root -D fw_logs -e "select distinct srvcName from fwService order by srvcName;"
 	echo -e "Enter a service group name to view : \n"
 	read srvcName
 	chck_srvc=$(mysql -u root -D fw_logs --skip-column-names -e "select count(*) from fwService where srvcName like '%$srvcName%';")
