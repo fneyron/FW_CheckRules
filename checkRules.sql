@@ -2,14 +2,14 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS checkRules;
 CREATE PROCEDURE checkRules() 
 BEGIN
-	DECLARE rule INTEGER DEFAULT 0;
+	DECLARE r INTEGER DEFAULT 0;
 	DECLARE src VARCHAR(255) DEFAULT "";
 	DECLARE dst VARCHAR(255) DEFAULT "";
 	DECLARE srvc VARCHAR(255) DEFAULT "";	
 	DECLARE rule_done INTEGER DEFAULT 0;
 	DECLARE pol VARCHAR(255) DEFAULT "accepted";
 	DECLARE rule_cur CURSOR FOR 
-		SELECT id, Source, Destination, Service, Policy FROM fwRule ORDER BY id; 
+		SELECT Rule, Source, Destination, Service, Policy FROM fwRule ORDER BY Rule; 
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET rule_done = 1;
 
 	DROP TABLE IF EXISTS accepted;
@@ -20,7 +20,7 @@ BEGIN
 
 	OPEN rule_cur; 
 	get_rule: LOOP 
-		FETCH rule_cur INTO rule, src, dst, srvc, pol;
+		FETCH rule_cur INTO r, src, dst, srvc, pol;
 		-- SELECT rule, src, dst, srvc;
 		IF rule_done THEN 
 			LEAVE get_rule; 
@@ -55,7 +55,7 @@ BEGIN
 					END IF;
 				END IF;
 				-- SELECT w;
-				SET @cmd = CONCAT('INSERT IGNORE INTO ',pol,'(Number, Rule) SELECT Number, ',rule,' FROM ',t,' WHERE 1=1',w,'');
+				SET @cmd = CONCAT('INSERT IGNORE INTO ',pol,'(Number, Rule) SELECT Number, ',r,' FROM ',t,' WHERE 1=1',w,'');
 				-- SELECT @cmd;
 				PREPARE stmt from @cmd;
 				EXECUTE stmt;
@@ -101,7 +101,7 @@ BEGIN
 						END IF;
 					END IF;
 					-- SELECT w;
-					SET @cmd = CONCAT('INSERT IGNORE INTO ',pol,'(Number, Rule) SELECT Number, ',rule,' FROM ',t,' WHERE ',w,'');
+					SET @cmd = CONCAT('INSERT IGNORE INTO ',pol,'(Number, Rule) SELECT Number, ',r,' FROM ',t,' WHERE ',w,'');
 					-- SELECT @cmd;
 					PREPARE stmt from @cmd;
 					EXECUTE stmt;
