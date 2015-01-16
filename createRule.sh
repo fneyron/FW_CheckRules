@@ -42,7 +42,7 @@ if [ "$policy" == "" ]; then policy="accept"; fi
 
 echo "Enter rule number:"
 read rule
-if [ "$rule" == "" ]; then rule=$(($(mysql -u root -D fw_logs -e "select max(Rule) from fwRule;") + 1)); fi
+if [ "$rule" == "" ]; then rule=$(($(mysql -u root -N -s -D fw_logs -e "select max(Rule) from fwRule;") + 1)); fi
 
 mysql -u root -D fw_logs -e "insert into fwRule values('', '$source', '$destination', '$srvc_grp', '$policy', '$rule');"
 mysql -u root -D fw_logs -e "select * from fwRule order by Rule;"
