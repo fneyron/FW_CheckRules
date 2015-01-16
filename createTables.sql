@@ -306,38 +306,6 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `Destination` text,
   `Protocol` text,
   `Rule` text,
-  `RuleName` text,
-  `CurrentRuleNumber` text,
-  `User` text,
-  `Information` text,
-  `Product` text,
-  `SourceMachineName` text,
-  `SourceUserName` text
+  `RuleName` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Contenu de la table `logs`
---
-
-INSERT INTO `logs` (`Number`, `Date`, `Time`, `Interface`, `Origin`, `Type`, `Action`, `Service`, `SourcePort`, `Source`, `Destination`, `Protocol`, `Rule`, `RuleName`, `CurrentRuleNumber`, `User`, `Information`, `Product`, `SourceMachineName`, `SourceUserName`) VALUES
-('Number', 'Date', 'Time', 'Interface', 'Origin', 'Type', 'Action', 'Service', 'Source Port', 'Source', 'Destination', 'Protocol', 'Rule', 'Rule Name', 'Current Rule Number', 'User', 'Information', 'Product', 'Source Machine Name', 'Source User Name'),
-('7387865', '22Dec2014', '12:01:43', 'External', '192.168.250.5', 'Log', 'Accept', '53', '52194', '192.168.31.137', '192.168.0.29', 'udp', '77', 'AD / DNS', '77-BES', '', 'inzone: Internal; outzone: Internal; service_id: domain-udp', 'VPN-1 Power/UTM', '', ''),
-('7387866', '22Dec2014', '12:01:43', 'External', '192.168.250.5', 'Log', 'Accept', '53', '53433', '192.168.31.137', '192.168.0.29', 'udp', '77', 'AD / DNS', '77-BES', '', 'inzone: Internal; outzone: Internal; service_id: domain-udp', 'VPN-1 Power/UTM', '', ''),
-('7387867', '22Dec2014', '12:01:43', 'Lan3.5', '192.168.250.5', 'Log', 'Accept', '53', '63775', '192.168.0.29', '8.8.8.8', 'udp', '102', 'DNS', '102-BES', '', 'inzone: Internal; outzone: External; service_id: domain-udp', 'VPN-1 Power/UTM', '', ''),
-('7387868', '22Dec2014', '12:01:43', 'Lan3.5', '192.168.250.5', 'Log', 'Accept', '53', '64745', '192.168.0.29', '8.8.8.8', 'udp', '102', 'DNS', '102-BES', '', 'inzone: Internal; outzone: External; service_id: domain-udp', 'VPN-1 Power/UTM', '', ''),
-('7387869', '22Dec2014', '12:01:43', 'Lan3.5', '192.168.250.5', 'Log', 'Accept', '161', '53199', '192.168.0.41', '192.168.23.30', 'udp', '7', 'Vers autres sites Oscaro', '7-BES', '', 'inzone: Internal; outzone: Internal; service_id: snmp', 'VPN-1 Power/UTM', '', ''),
-('7387870', '22Dec2014', '12:01:43', 'External', '192.168.250.5', 'Log', 'Accept', '80', '51292', '192.168.24.87', '192.168.0.101', 'tcp', '107', 'PIM : acc', '107-BES', '', 'inzone: Internal; outzone: Internal; service_id: http', 'VPN-1 Power/UTM', '', ''),
-('7387871', '22Dec2014', '12:01:43', 'Lan3.5', '192.168.250.5', 'Log', 'Accept', '', '', '192.168.0.41', '192.168.23.30', 'icmp', '7', 'Vers autres sites Oscaro', '7-BES', '', 'inzone: Internal; outzone: Internal; service_id: icmp-proto; ICMP: Echo Request; ICMP Type: 8; ICMP Code: 0', 'VPN-1 Power/UTM', '', ''),
-('7387872', '22Dec2014', '12:01:43', 'External', '192.168.250.5', 'Log', 'Accept', '53', '53709', '192.168.31.137', '192.168.0.29', 'udp', '77', 'AD / DNS', '77-BES', '', 'inzone: Internal; outzone: Internal; service_id: domain-udp', 'VPN-1 Power/UTM', '', ''),
-('7387873', '22Dec2014', '12:01:43', 'Lan3.5', '192.168.250.5', 'Log', 'Accept', '53', '63708', '192.168.0.29', '8.8.8.8', 'udp', '102', 'DNS', '102-BES', '', 'inzone: Internal; outzone: External; service_id: domain-udp', 'VPN-1 Power/UTM', '', ''),
-('7387874', '22Dec2014', '12:01:43', 'Lan3.5', '192.168.250.5', 'Log', 'Accept', '10050', '51182', '192.168.0.41', '192.168.23.235', 'tcp', '7', 'Vers autres sites Oscaro', '7-BES', '', 'inzone: Internal; outzone: Internal; service_id: Zabbix-Agent_10050', 'VPN-1 Power/UTM', '', ''),
-('7387875', '22Dec2014', '12:01:43', 'Lan3.5', '192.168.250.5', 'Log', 'Accept', '10050', '34878', '192.168.0.41', '192.168.39.244', 'tcp', '7', 'Vers autres sites Oscaro', '7-BES', '', 'inzone: Internal; outzone: Internal; service_id: Zabbix-Agent_10050', 'VPN-1 Power/UTM', '', ''),
-('7387876', '22Dec2014', '12:01:43', 'Lan3.5', '192.168.250.5', 'Log', 'Accept', '10050', '42500', '192.168.0.41', '192.168.39.165', 'tcp', '7', 'Vers autres sites Oscaro', '7-BES', '', 'inzone: Internal; outzone: Internal; service_id: Zabbix-Agent_10050', 'VPN-1 Power/UTM', '', ''),
-('7387877', '22Dec2014', '12:01:43', 'Lan3.5', '192.168.250.5', 'Log', 'Accept', '10050', '57998', '192.168.0.41', '192.168.151.11', 'tcp', '7', 'Vers autres sites Oscaro', '7-BES', '', 'inzone: Internal; outzone: Internal; service_id: Zabbix-Agent_10050', 'VPN-1 Power/UTM', '', ''),
-('7387878', '22Dec2014', '12:01:43', 'Lan3.5', '192.168.250.5', 'Log', 'Accept', '10050', '48316', '192.168.0.41', '192.168.152.100', 'tcp', '7', 'Vers autres sites Oscaro', '7-BES', '', 'inzone: Internal; outzone: Internal; service_id: Zabbix-Agent_10050', 'VPN-1 Power/UTM', '', ''),
-('7387879', '22Dec2014', '12:01:43', 'Lan3.5', '192.168.250.5', 'Log', 'Accept', '10050', '42482', '192.168.0.41', '192.168.39.251', 'tcp', '7', 'Vers autres sites Oscaro', '7-BES', '', 'inzone: Internal; outzone: Internal; service_id: Zabbix-Agent_10050', 'VPN-1 Power/UTM', '', ''),
-('7387880', '22Dec2014', '12:01:43', 'Lan3.5', '192.168.250.5', 'Log', 'Accept', '10050', '39854', '192.168.0.41', '192.168.39.239', 'tcp', '7', 'Vers autres sites Oscaro', '7-BES', '', 'inzone: Internal; outzone: Internal; service_id: Zabbix-Agent_10050', 'VPN-1 Power/UTM', '', ''),
-('7387881', '22Dec2014', '12:01:43', 'Lan3.5', '192.168.250.5', 'Log', 'Accept', '10050', '37311', '192.168.0.41', '192.168.31.232', 'tcp', '7', 'Vers autres sites Oscaro', '7-BES', '', 'inzone: Internal; outzone: Internal; service_id: Zabbix-Agent_10050', 'VPN-1 Power/UTM', '', '');
-
-
 
