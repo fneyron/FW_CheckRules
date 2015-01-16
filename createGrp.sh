@@ -28,20 +28,24 @@ then
 		while [ "$add_range" == "y" ]
 		do	
 			echo -e "Please enter network/mask or ip (ie: 192.168.0.0/24 or 192.168.0.1) and finish with ".": \n"
-			read ip
+			read ip 
 			while [ "$ip" != "." ]
 			do
-				var=($(echo $ip | sed -n "s/\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)\/\([0-9]*\)/\1 \2/p"))
+				var=($(echo $ip | tr -d \" | sed -n "s/\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)\/\([0-9]*\)/\1 \2/p"))
 				if [ "${var[1]}" != "" ]
 				then 
+					ip=${var[0]}"/"${var[1]}
 					ip_s=$(ipcalc $ip | grep HostMin | awk '{print $2}')
 					ip_e=$(ipcalc $ip | grep HostMax | awk '{print $2}')
 				else
-					ip=($(echo $ip | sed -n "s/\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)/\1/p" | tr -d \"))
+					ip=($(echo $ip | tr -d \" | sed -n "s/\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)/\1/p"))
 					ip_s=$ip	
 					ip_e=$ip
 				fi
-				mysql -u root -D fw_logs -e "insert into fwGroup(id, grpName, ipRange, ip_start, ip_end) values('', '$grpName', '$ip', '$ip_s', '$ip_e');"
+				if [ "$ip" != "" ]
+				then
+					mysql -u root -D fw_logs -e "insert ignore into fwGroup(grpName, ipRange, ip_start, ip_end) values('$grpName', '$ip', '$ip_s', '$ip_e');"
+				fi		
 				read ip
 			done
 			echo -e "Add a new ip range for the group $grpName (y|n) : \n"

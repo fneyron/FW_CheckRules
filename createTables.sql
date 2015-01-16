@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `fwGroup` (
 -- Contenu de la table `fwGroup`
 --
 
-INSERT INTO `fwGroup` (`id`, `grpName`, `ipRange`, `ip_start`, `ip_end`) VALUES
+INSERT IGNORE INTO `fwGroup` (`id`, `grpName`, `ipRange`, `ip_start`, `ip_end`) VALUES
 (4, 'Grp_NET_ALL_RFC1918', '10.0.0.0/8', '10.0.0.1', '10.255.255.254'),
 (5, 'Grp_NET_ALL_RFC1918', '172.16.0.0/12', '172.16.0.1', '172.31.255.254'),
 (6, 'Grp_NET_ALL_RFC1918', '192.168.0.0/16', '192.168.0.1', '192.168.255.254'),
@@ -176,7 +176,7 @@ CREATE TABLE IF NOT EXISTS `fwRule` (
 -- Contenu de la table `fwRule`
 --
 
-INSERT INTO `fwRule` (`id`, `Source`, `Destination`, `Service`, `Policy`) VALUES
+INSERT IGNORE INTO `fwRule` (`id`, `Source`, `Destination`, `Service`, `Policy`) VALUES
 (1, 'Grp_NET_FR_Guest', '!Grp_NET_ALL_RFC1918', 'Grp_NET_FR_Guest_Srvc', 'accept'),
 (2, 'Grp_NET_FR_Guest', 'any', 'any', 'drop'),
 (7, 'Grp_HOST_FR_Client_Radius', 'Grp_HOST_FR_Server_Radius', 'Grp_Radius', 'accept'),
@@ -212,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `fwService` (
 -- Contenu de la table `fwService`
 --
 
-INSERT INTO `fwService` (`id`, `srvcName`, `protocol`, `port_b`, `port_e`) VALUES
+INSERT IGNORE INTO `fwService` (`id`, `srvcName`, `protocol`, `port_b`, `port_e`) VALUES
 (1, 'Grp_IRC', 'tcp', 6660, 6670),
 (2, 'Grp_IRC', 'tcp', 6697, 6697),
 (3, 'Grp_IRC', 'tcp', 7000, 7000),
@@ -293,7 +293,7 @@ INSERT INTO `fwService` (`id`, `srvcName`, `protocol`, `port_b`, `port_e`) VALUE
 --
 
 CREATE TABLE IF NOT EXISTS `logs` (
-  `Number` text,
+  `Number` int(11) NOT NULL,
   `Date` text,
   `Time` text,
   `Interface` text,
@@ -306,6 +306,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `Destination` text,
   `Protocol` text,
   `Rule` text,
-  `RuleName` text
+  `RuleName` text,
+  PRIMARY KEY (`Number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

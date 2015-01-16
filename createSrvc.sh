@@ -28,7 +28,10 @@ then
 				port_e=$port_b
 
 			fi
-			mysql -u root -D fw_logs -e "insert into fwService(id, srvcName, protocol, port_b, port_e) values('', '$srvcName', '$protocol', '$port_b', '$port_e');"
+			if [ "$srvc" != "" ]
+			then
+				mysql -u root -D fw_logs -e "insert into fwService(id, srvcName, protocol, port_b, port_e) values('', '$srvcName', '$protocol', '$port_b', '$port_e');"
+			fi	
 			read srvc
 		done	
 		mysql -u root -D fw_logs -e "select * from fwService where srvcName like '%$srvcName%';"
