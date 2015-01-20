@@ -56,7 +56,7 @@ BEGIN
 				END IF;
 				-- SELECT w;
 				SET @cmd = CONCAT('INSERT IGNORE INTO ',pol,'(Number, Rule) SELECT Number, ',r,' FROM ',t,' WHERE 1=1',w,'');
-				-- SELECT @cmd;
+				SELECT @cmd;
 				PREPARE stmt from @cmd;
 				EXECUTE stmt;
 			END BLOCK2;
@@ -102,7 +102,7 @@ BEGIN
 					END IF;
 					-- SELECT w;
 					SET @cmd = CONCAT('INSERT IGNORE INTO ',pol,'(Number, Rule) SELECT Number, ',r,' FROM ',t,' WHERE ',w,'');
-					-- SELECT @cmd;
+					SELECT @cmd;
 					PREPARE stmt from @cmd;
 					EXECUTE stmt;
 				END LOOP get_srvc;

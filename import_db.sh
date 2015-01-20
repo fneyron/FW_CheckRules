@@ -6,5 +6,5 @@ LOGS=$1
 
 while read line 
 do 
-	mysql -u root -D fw_logs -e "INSERT INTO logs VALUES('$(echo $line | sed "s/;/','/g")');"
+	mysql -u root -D fw_logs -e "INSERT INTO test VALUES('$(echo $line | sed "s/;/','/g")');"
 done < $LOGS
