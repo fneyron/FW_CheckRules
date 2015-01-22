@@ -63,9 +63,9 @@ then
 	echo "Give a rule number: "
 	read rule
 	echo "Group Source:"
-	mysql -u root -D fw_logs -e "select grpName, ipRange from fwGroup g, fwRule f where g.grpName=f.Source and f.Rule=$rule;" 
+	mysql -u root -D fw_logs -e "select grpName, ipRange, ip_start, ip_end from fwGroup g, fwRule f where g.grpName=f.Source and f.Rule=$rule;" 
 	echo "Group Destination:"
-	mysql -u root -D fw_logs -e "select grpName, ipRange from fwGroup g, fwRule f where g.grpName=f.Destination and f.Rule=$rule;"
+	mysql -u root -D fw_logs -e "select grpName, ipRange, ip_start, ip_end from fwGroup g, fwRule f where g.grpName=f.Destination and f.Rule=$rule;"
 	echo "Service Group:"
 	mysql -u root -D fw_logs -e "select srvcName, protocol, port_b, port_e from fwService s, fwRule f where s.srvcName=f.Service and f.Rule=$rule;"
 else 

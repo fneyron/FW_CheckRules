@@ -26,9 +26,6 @@ BEGIN
 			LEAVE get_rule; 
 		END IF;
 
-		IF pol = 'accept' THEN SET pol = 'accepted';
-		ELSE SET pol = 'dropped'; END IF;
-
 		IF srvc = 'any' THEN
 			BLOCK2: BEGIN
 				DECLARE w TEXT DEFAULT "";
@@ -55,7 +52,11 @@ BEGIN
 					END IF;
 				END IF;
 				-- SELECT w;
-				SET @cmd = CONCAT('INSERT IGNORE INTO ',pol,'(Number, Rule) SELECT Number, ',r,' FROM ',t,' WHERE 1=1',w,'');
+				IF pol = 'drop' THEN
+					SET @cmd = CONCAT('INSERT IGNORE INTO dropped(Number, Rule) SELECT Number, ',r,' FROM ',t,' WHERE 1=1',w,' AND Number NOT IN (SELECT Number FROM accepted)');
+				ELSE
+					SET @cmd = CONCAT('INSERT IGNORE INTO accepted(Number, Rule) SELECT Number, ',r,' FROM ',t,' WHERE 1=1',w,'');
+				END IF;
 				SELECT @cmd;
 				PREPARE stmt from @cmd;
 				EXECUTE stmt;
@@ -79,7 +80,7 @@ BEGIN
 						LEAVE get_srvc; 
 					END IF;
 					SET t = 'logs l';
-					SET w = CONCAT('Service BETWEEN ',p_b,' AND ',p_e,' AND protocol=\'',proto,'\'');
+					SET w = CONCAT('Service BETWEEN ',p_b,' AND ',p_e,' AND Protocol=\'',proto,'\'');
 					IF src != 'any'
 					THEN
 						IF LEFT(src, 1) = '!'
@@ -101,7 +102,11 @@ BEGIN
 						END IF;
 					END IF;
 					-- SELECT w;
-					SET @cmd = CONCAT('INSERT IGNORE INTO ',pol,'(Number, Rule) SELECT Number, ',r,' FROM ',t,' WHERE ',w,'');
+					IF pol = "drop" THEN
+						SET @cmd = CONCAT('INSERT IGNORE INTO dropped(Number, Rule) SELECT Number, ',r,' FROM ',t,' WHERE ',w,' AND Number NOT IN (SELECT Number FROM accepted)');
+					ELSE
+						SET @cmd = CONCAT('INSERT IGNORE INTO accepted(Number, Rule) SELECT Number, ',r,' FROM ',t,' WHERE ',w,'');
+					END IF;
 					SELECT @cmd;
 					PREPARE stmt from @cmd;
 					EXECUTE stmt;

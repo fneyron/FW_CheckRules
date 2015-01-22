@@ -16,8 +16,8 @@ then
 	rm $not_match
 fi
 
-echo "Creating Range"
-mysql -u root -D fw_logs < createRangeIP.sql 
+#echo "Creating Range"
+#mysql -u root -D fw_logs < createRangeIP.sql 
 echo "Creating Tables"
 mysql -u root -D fw_logs < checkRules.sql
 mysql -u root -D fw_logs -e "SELECT Source, Destination, Service, d.Rule INTO OUTFILE '$drop' FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' FROM logs l, dropped d WHERE d.Number=l.Number;"
