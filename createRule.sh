@@ -17,7 +17,7 @@ function chck_service(){
 	if [ $((chck_srvc)) -gt 0 ]
 	then
 		echo -e "Service $1 contain : "
-		mysql -u root -D fw_logs -e "select * from fwService where srvcName like '%$1%';"
+		mysql -u root -D fw_logs -e "select * from fwService where srvcName='$1';"
 	fi
 }
 
@@ -55,11 +55,11 @@ read rule
 if [ "$rule" == "" ]; then rule=$(($(mysql -u root -N -s -D fw_logs -e "select max(Rule) from fwRule;") + 1)); fi
 
 mysql -u root -D fw_logs -e "insert into fwRule values('', '$source', '$destination', '$srvc_grp', '$policy', '$rule');"
-mysql -u root -D fw_logs -e "select * from fwRule order by Rule;"
+mysql -u root -D fw_logs -e "select Rule, Source, Destination, Service, Policy from fwRule order by Rule;"
 	
 elif [ "$1" == "-l" ]
 then
-	mysql -u root -D fw_logs -e "select Rule, Source, Destination, Service, Policy from fwRule order by Rule;"
+	mysql -u root -D fw_logs -e "select Rule, Source, Destination, Service, Policy, Active from fwRule order by Rule;"
 	echo "Give a rule number: "
 	read rule
 	echo "Group Source:"

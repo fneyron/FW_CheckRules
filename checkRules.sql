@@ -9,7 +9,7 @@ BEGIN
 	DECLARE rule_done INTEGER DEFAULT 0;
 	DECLARE pol VARCHAR(255) DEFAULT "accepted";
 	DECLARE rule_cur CURSOR FOR 
-		SELECT Rule, Source, Destination, Service, Policy FROM fwRule ORDER BY Rule; 
+		SELECT Rule, Source, Destination, Service, Policy FROM fwRule WHERE Active=1 ORDER BY Rule; 
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET rule_done = 1;
 
 	DROP TABLE IF EXISTS accepted;
@@ -25,7 +25,6 @@ BEGIN
 		IF rule_done THEN 
 			LEAVE get_rule; 
 		END IF;
-
 		IF srvc = 'any' THEN
 			BLOCK2: BEGIN
 				DECLARE w TEXT DEFAULT "";
@@ -35,19 +34,19 @@ BEGIN
 					THEN
 					IF LEFT(src, 1) = '!'
 					THEN
-						SET w = CONCAT (w,' AND l.Source NOT IN (SELECT ip FROM ',SUBSTR(src, 2),')');
+						SET w = CONCAT (w,' AND l.Source NOT IN (SELECT ip FROM `',SUBSTR(src, 2),'`)');
 					ELSE
-						SET t = CONCAT (t,', ',src,' s');
+						SET t = CONCAT (t,', `',src,'` s');
 						SET w = CONCAT (w,' AND l.Source=s.ip');
 					END IF;
 				END IF;
-				IF dst != 'any'
+				IF dst != 'any' 
 				THEN
 					IF LEFT(dst, 1) = '!'
 					THEN
-						SET w = CONCAT (w,' AND l.Destination NOT IN (SELECT ip FROM ',SUBSTR(dst, 2),')');
+						SET w = CONCAT (w,' AND l.Destination NOT IN (SELECT ip FROM `',SUBSTR(dst, 2),'`)');
 					ELSE
-						SET t = CONCAT (t,', ',dst,' d');
+						SET t = CONCAT (t,', `',dst,'` d');
 						SET w = CONCAT (w,' AND l.Destination=d.ip');
 					END IF;
 				END IF;
@@ -81,13 +80,13 @@ BEGIN
 					END IF;
 					SET t = 'logs l';
 					SET w = CONCAT('Service BETWEEN ',p_b,' AND ',p_e,' AND Protocol=\'',proto,'\'');
-					IF src != 'any'
+					IF src != 'any' 
 					THEN
 						IF LEFT(src, 1) = '!'
 						THEN
-							SET w = CONCAT (w,' AND l.Source NOT IN (SELECT ip FROM ',SUBSTR(src, 2),')');
+							SET w = CONCAT (w,' AND l.Source NOT IN (SELECT ip FROM `',SUBSTR(src, 2),'`)');
 						ELSE
-							SET t = CONCAT (t,', ',src,' s');
+							SET t = CONCAT (t,', `',src,'` s');
 							SET w = CONCAT (w,' AND l.Source=s.ip');
 						END IF;
 					END IF;
@@ -95,9 +94,9 @@ BEGIN
 					THEN
 						IF LEFT(dst, 1) = '!'
 						THEN
-							SET w = CONCAT (w,' AND l.Destination NOT IN (SELECT ip FROM ',SUBSTR(dst, 2),')');
+							SET w = CONCAT (w,' AND l.Destination NOT IN (SELECT ip FROM `',SUBSTR(dst, 2),'`)');
 						ELSE
-							SET t = CONCAT (t,', ',dst,' d');
+							SET t = CONCAT (t,', `',dst,'` d');
 							SET w = CONCAT (w,' AND l.Destination=d.ip');
 						END IF;
 					END IF;
